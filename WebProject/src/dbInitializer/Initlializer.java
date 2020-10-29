@@ -13,8 +13,8 @@ public class Initlializer {
 		// TODO Auto-generated method stub
 		//Connect to DB
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "system";
-		String password = "12345";
+		String user = "bms";
+		String password = "abcd";
 		
 		//loading driver
 		Class.forName("oracle.jdbc.driver.OracleDriver");

@@ -12,8 +12,8 @@ public class Deleter {
 		// TODO Auto-generated method stub
 		//delete all tables when completed
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "system";
-		String password = "12345";
+		String user = "bms";
+		String password = "abcd";
 		
 		//loading driver
 		Class.forName("oracle.jdbc.driver.OracleDriver");
