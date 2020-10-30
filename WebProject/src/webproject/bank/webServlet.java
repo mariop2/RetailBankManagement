@@ -67,7 +67,96 @@ public class webServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		// response.getWriter().append("Served at: ").append(request.getContextPath());
+
+			//know what page we are on
+			HttpSession session = request.getSession();
+			String pageValue = (String)session.getAttribute("value");
+	
+			if (pageValue.equalsIgnoreCase("custStatus")) {
+				//Connect to DB
+				String url = "jdbc:oracle:thin:@localhost:1521:xe";
+				String user = "system";
+				String password = "12345";
+				
+				//loading driver
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+				//getting connection
+				Connection con = DriverManager.getConnection(url, user, password);
+	
+				ArrayList list = new ArrayList();
+	
+				String query = "SELECT * FROM tbl_Customer";
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				
+				while (rs.next()) {
+					String name = rs.getString("customerName");
+					String status = rs.getString("status");
+					String msg = rs.getString("msg");
+					String lastUpdated = rs.getString("lastUpdated");
+
+					ArrayList temp = new ArrayList();
+					temp.add(name);
+					temp.add(status);
+					temp.add(msg);
+					temp.add(lastUpdated);
+	
+					list.add(temp);
+				}
+
+				rs.close();
+				stmt.close();
+	
+				request.setAttribute("customers", list);
+				RequestDispatcher view = request.getRequestDispatcher("customerStatus.jsp");
+				view.forward(request, response);
+	
+			} else if (pageValue.equalsIgnoreCase("accStatus")) {
+				//Connect to DB
+				String url = "jdbc:oracle:thin:@localhost:1521:xe";
+				String user = "system";
+				String password = "12345";
+				
+				//loading driver
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+				//getting connection
+				Connection con = DriverManager.getConnection(url, user, password);
+	
+				ArrayList list = new ArrayList();
+	
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT * FROM tbl_Account");
+				
+				while (rs.next()) {
+					int id = rs.getInt("id");
+					String type = rs.getString("type");
+					String status = rs.getString("status");
+					String msg = rs.getString("msg");
+					String lastUpdated = rs.getString("lastUpdated");
+	
+					ArrayList temp = new ArrayList();
+					temp.add(id);
+					temp.add(type);
+					temp.add(status);
+					temp.add(msg);
+					temp.add(lastUpdated);
+
+					list.add(temp);
+				}
+
+				rs.close();
+				stmt.close();
+
+				request.setAttribute("accounts", list);
+				RequestDispatcher view = request.getRequestDispatcher("accountStatus.jsp");
+				view.forward(request, response);
+	
+			} else {
+	
+			}
 	}
 
 	/**
