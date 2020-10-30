@@ -100,10 +100,12 @@ public class Initializer {
 		System.out.println(x);
 		x = dbController.createAccount(4, "checking", 5665, "fdasfd", "fdasdfs", "11/58/28", 3, con);
 		System.out.println(x);
+		x = dbController.createAccount(5, "checking", 5665, "fdasfd", "fdasdfs", "11/58/28", 3, con);
+		System.out.println(x);
 		
 		//
 		
-	
+		dbController.addCustomerToAccount(1, 4, con);
 		
 		
 		//test deleting a customer without bank account
