@@ -143,7 +143,31 @@ public class dbController {
 		
 		int cnt = pst.executeUpdate();
 		
-		//delete accounts with no customers
+		//get list of active account id's
+		q = "SELECT id FROM tbl_Account";
+		pst = con.prepareStatement(q);
+		
+		ResultSet results = pst.executeQuery();
+		ResultSet results2;
+		int tempAccountId;
+		
+		while(results.next()) {
+			// check to see if link exists in intermediate table and count instances
+			tempAccountId = results.getInt(1);
+			q = "SELECT COUNT(*) FROM tbl_Intermediate WHERE accountId = ?";;
+			pst = con.prepareStatement(q);
+			pst.setInt(1, tempAccountId);
+			results2 = pst.executeQuery();
+			results2.next();
+			//if count is zero delete from account table
+			if (results2.getInt(1) == 0){
+				q = "DELETE FROM tbl_Account WHERE id = ?";;
+				pst = con.prepareStatement(q);
+				pst.setInt(1, tempAccountId);
+				pst.executeUpdate();
+			}
+				
+		}
 		
 		if(cnt == 1){
 			return true;
@@ -222,6 +246,31 @@ public class dbController {
 	
 		
 	}
+	
+	//deposit into account
+	public static boolean depositAccount(int accountid, double amount, Connection con){
+		
+		
+		
+		
+		return true;
+	}
+	
+	
+	
+	//widthraw from account
+	
+	
+	
+	
+	//create transaction history
+	
+	
+	
+	
+	//getTransactionHistory
+	
+	
 
 	
 

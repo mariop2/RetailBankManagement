@@ -61,7 +61,6 @@ public class Initializer {
 		pst = con.prepareStatement(q);
 		pst.executeUpdate();
 		
-
 		
 		boolean x;
 
