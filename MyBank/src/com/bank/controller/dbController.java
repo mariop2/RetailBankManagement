@@ -60,7 +60,6 @@ public class dbController {
 		
 		
 		
-		
 	}
 	
 	static boolean addToLinkTbl(int customerId, int accountId, Connection con) throws SQLException{
@@ -80,6 +79,111 @@ public class dbController {
 			return false;
 		}
 		
+		
+	}
+	
+	//Removes the account from the customer
+	static boolean removeCustomerFromAccount(int customerId, int accountId, Connection con) throws SQLException{
+		
+		String q = "DELETE FROM tbl_Intermediate WHERE customerId = ? AND accountId = ?";
+		PreparedStatement pst = con.prepareStatement(q);
+		pst.setInt(1,customerId);
+		pst.setInt(2,accountId);
+		
+		int cnt = pst.executeUpdate();
+		if(cnt == 1){
+			//attempt to delete Account
+			q = "DELETE FROM tbl_Account WHERE Id = ?";
+			pst = con.prepareStatement(q);
+			pst.setInt(1,accountId);
+			pst.executeUpdate();
+			return true;
+		}else{
+			return false;
+		}
+	
+	}
+	
+	//Removes the account from the bank
+	static boolean removeAccountFromBank(int accountId, Connection con) throws SQLException{
+		
+		String q = "DELETE FROM tbl_Intermediate WHERE accountId = ?";
+		PreparedStatement pst = con.prepareStatement(q);
+		pst.setInt(1,accountId);
+		
+		pst.executeUpdate();
+		
+		q = "DELETE FROM tbl_Account WHERE id = ?";
+		pst = con.prepareStatement(q);
+		pst.setInt(1,accountId);
+		
+		int cnt = pst.executeUpdate();
+		
+		if(cnt == 1){
+			return true;
+			
+		}else{
+			return false;
+		}
+
+	}
+	
+	//Removes the account from the bank
+	static boolean removeCustomerFromBank(int customerId, Connection con) throws SQLException{
+		
+		String q = "DELETE FROM tbl_Intermediate WHERE customerId = ?";
+		PreparedStatement pst = con.prepareStatement(q);
+		pst.setInt(1,customerId);
+		
+		pst.executeUpdate();
+		
+		q = "DELETE FROM tbl_Customer WHERE id = ?";
+		pst = con.prepareStatement(q);
+		pst.setInt(1,customerId);
+		
+		int cnt = pst.executeUpdate();
+		
+		//get list of active account id's
+		q = "SELECT id FROM tbl_Account";
+		pst = con.prepareStatement(q);
+		
+		ResultSet results = pst.executeQuery();
+		ResultSet results2;
+		int tempAccountId;
+		
+		while(results.next()) {
+			// check to see if link exists in intermediate table and count instances
+			tempAccountId = results.getInt(1);
+			q = "SELECT COUNT(*) FROM tbl_Intermediate WHERE accountId = ?";;
+			pst = con.prepareStatement(q);
+			pst.setInt(1, tempAccountId);
+			results2 = pst.executeQuery();
+			results2.next();
+			//if count is zero delete from account table
+			if (results2.getInt(1) == 0){
+				q = "DELETE FROM tbl_Account WHERE id = ?";;
+				pst = con.prepareStatement(q);
+				pst.setInt(1, tempAccountId);
+				pst.executeUpdate();
+			}
+				
+		}
+		
+		if(cnt == 1){
+			return true;
+			
+		}else{
+			return false;
+		}
+
+	}
+	
+	
+	
+
+	public static boolean addCustomerToAccount(int customerId, int accountId, Connection con) throws SQLException{
+		
+		return addToLinkTbl(customerId, accountId, con);
 		
 	}
 	
@@ -142,6 +246,31 @@ public class dbController {
 	
 		
 	}
+	
+	//deposit into account
+	public static boolean depositAccount(int accountid, double amount, Connection con){
+		
+		
+		
+		
+		return true;
+	}
+	
+	
+	
+	//widthraw from account
+	
+	
+	
+	
+	//create transaction history
+	
+	
+	
+	
+	//getTransactionHistory
+	
+	
 
 	
 

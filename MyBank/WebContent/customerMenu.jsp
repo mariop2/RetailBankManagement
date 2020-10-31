@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/styles.css">
     <title>ABC Bank</title>
     <%  session.setAttribute("value", "custMenu"); %>
+
 </head>
 <body>
 <h1>Customer Main Menu!!!!</h1>

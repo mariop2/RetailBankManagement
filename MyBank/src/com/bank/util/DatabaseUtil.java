@@ -10,7 +10,7 @@ public class DatabaseUtil {
 			try {
 				System.out.println("****** here");
 				Class.forName("oracle.jdbc.driver.OracleDriver");
-				con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "bms", "abcd");
+				con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "12345");
 				System.out.println("Conn: " + con);
 			} 
 			catch(ClassNotFoundException e) {
