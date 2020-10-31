@@ -15,18 +15,18 @@ function goBack() {
  <%  session.setAttribute("value", "custRegistration"); %>
 </head>
 <body>
- <form name="custRegistration" action="webServlet" method="post">
+ <form name="Customerform" action="webServlet" method="post">
   <div class="container">
     <h1>Registration Page</h1>
     <label for="ssn"><b>Customer SSN</b></label>
-    <input type="text" placeholder="Enter ssn" name="customerId" id="cid" required>
+    <input type="text" placeholder="Enter ssn" name="customerId" id="cid" placeholder="123-45-6789"  required pattern="\d{9}" required>
 <br>
     <label for="name"><b>Customer Name</b></label>
-    <input type="text" placeholder="name" name="customerName" id="cname" required>
+    <input type="text" placeholder="name" name="customerName" id="cname" pattern="[a-zA-Z][a-zA-Z ]{2,}" required>
     
 <br>
     <label for="age"><b>Age</b></label>
-    <input type="text" placeholder="Enter Age" name="customerAge" id="cage" required>
+    <input type="text" placeholder="Enter Age" name="customerAge" id="cage" max="99" required>
 <br>
     <label for="address1"><b>Address</b></label>
     <input type="text" placeholder="Enter address" name="customerAddress1" id="caddress1" required>
@@ -41,12 +41,13 @@ function goBack() {
    <input type="text" placeholder="state" name="customerState" id="cstate" required>
  <br>
     <button type = "submit" name = "regBtns" value = "submit">Submit</button>
-    <button type = "submit" name = "regBtns" value = "mainmenu">Main Menu</button>  
-
+    <button type="reset" class="registerbtn">Reset</button>
   </div>
   
 </form>
-
+<form name="Menuform" action="webServlet" method="post">
+	<button type = "submit" name = "regBtns" value = "mainmenu">Main Menu</button>  
+</form>
 
 </body>
 </html>

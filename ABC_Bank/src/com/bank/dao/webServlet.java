@@ -39,17 +39,16 @@ public class webServlet extends HttpServlet {
     	
     }
     
-    public void destroy() {
-    	try {
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    }
+//    public void destroy() {
+//    	try {
+//			con.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//    }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -130,11 +129,9 @@ public class webServlet extends HttpServlet {
 				try {
 					dbController.createCustomer(Integer.parseInt(customerId), customerName, Integer.parseInt(customerAge), adr1, adr2, city, state, null, null, dtf.format(now), con);
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					System.out.println(e.getMessage());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					System.out.println(e.getMessage());
 				}
@@ -143,27 +140,39 @@ public class webServlet extends HttpServlet {
 				
 			} else if (act.equals("mainmenu")) {
 			    //main menu button was pressed
-				response.sendRedirect("mainMenu.jsp");
-				response.setIntHeader("Refresh",1);
+				response.sendRedirect("customerMenu.jsp");
 
 			} else {
 			    //someone has altered the HTML and sent a different value!
 			}
 			
 		}
+		else if(pageValue.equalsIgnoreCase("displayCustomer")) {
+			String x = request.getParameter("regBtns");
+			
+			if(x.equals("mainmenu")) {
+				response.sendRedirect("customerMenu.jsp");
+			}
+			else if(x.equals("Customers Table")) {
+				response.sendRedirect("displayCustomers.jsp");
+			}
+			else if(x.equals("Accounts Table")) {
+				response.sendRedirect("displayCustomers.jsp");
+			}
+
+		}
 		else if(pageValue.equalsIgnoreCase("custMenu")) {
 			
 			String x = request.getParameter("sub");
 			
-//			if(x.equals("Show Customers")) {
-//				System.out.println("Show Customers");
-//				response.sendRedirect("displayCustomers.jsp");
-//				response.setIntHeader("Refresh",1);
-//				
-//			}
+			if(x.equals("Show Customers")) {
+				System.out.println("Show Customers");
+				response.sendRedirect("displayCustomers.jsp");
+				
+			}
 			if(x.equals("Create Customer")) {
 				System.out.println("Create Customer");
-				response.sendRedirect("CustomerRegistration.jsp");
+				response.sendRedirect("customerRegistration.jsp");
 			}
 			else if(x.equals("Update Customer")) {
 				System.out.println("Update Customer");
@@ -238,32 +247,186 @@ public class webServlet extends HttpServlet {
 		}
 		
 		else if(pageValue.equalsIgnoreCase("updateCustomerScreen")) {
-						
-			String q = "UPDATE tbl_Customer SET name = ?, ADR1 = ?, age = ? WHERE id = ?";
-			int social = (Integer)session.getAttribute("CustomerUpdateCustID");
-			int age = Integer.parseInt(request.getParameter("age"));
-		
-			try {
-				PreparedStatement pst = con.prepareStatement(q);
-				pst.setString(1, request.getParameter("name"));
-				pst.setString(2, request.getParameter("address"));
-				pst.setInt(3, age);
-				pst.setInt(4, social);	
-				pst.execute();
-			}
-			catch (NumberFormatException e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-		    }
-			catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
+				
 			
-			response.sendRedirect("custUpdate.jsp");
+			String act = request.getParameter("regBtns");
+			
+			if (act.equals("update")) {
+			
+				String q = "UPDATE tbl_Customer SET name = ?, ADR1 = ?, age = ? WHERE id = ?";
+				int social = (Integer)session.getAttribute("CustomerUpdateCustID");
+				int age = Integer.parseInt(request.getParameter("age"));
+			
+				try {
+					PreparedStatement pst = con.prepareStatement(q);
+					pst.setString(1, request.getParameter("name"));
+					pst.setString(2, request.getParameter("address"));
+					pst.setInt(3, age);
+					pst.setInt(4, social);	
+					pst.execute();
+				}
+				catch (NumberFormatException e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+			    }
+				catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+				}
+				
+				response.sendRedirect("custUpdate.jsp");
+			}
+			else {
+				response.sendRedirect("customerMenu.jsp");
+
+			}
+		
 		}
 		
+		else if(pageValue.equalsIgnoreCase("tellerAccountSearch")) {
+			
+			String a = request.getParameter("accountId");
+			int accountId = a.length() == 0 ? 0 : Integer.parseInt(a);
+
+			// Checks which input was put in
+			if(accountId == 0) { 
+				response.sendRedirect("tellerAccountScreen.jsp"); 
+			}
+			else {
+				String q;
+
+				q = "SELECT * from tbl_Account where id = ?";
+				
+				PreparedStatement pst;
+				ResultSet results;
+				int isWrong = 0;
+				try{
+					pst = con.prepareStatement(q);
+					pst.setInt(1, accountId);
+					results = pst.executeQuery();
+					while(results.next()) {
+						// Set attributes to be used in JSP file
+			
+						session.setAttribute("accountId", results.getInt(1));
+						session.setAttribute("accountType", results.getString(2));
+						session.setAttribute("accountBalance", results.getInt(3));
+						session.setAttribute("accountStatus", results.getString(4));
+						session.setAttribute("accountMsg", results.getString(5));
+						session.setAttribute("accountLastUpdated", results.getString(6));
+						isWrong = 1;
+					}
+				}
+			    catch (NumberFormatException e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+			    }
+				catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+				}
+				if(isWrong == 1) {
+					response.sendRedirect("tellerAccountScreen.jsp");
+				}
+				else {
+					response.sendRedirect("tellerAccountSearch.jsp");
+				}
+			}
+			
+		}
+		
+		
+		else if(pageValue.equalsIgnoreCase("tellerAccountScreen")) {   //Controls creation of a new Customer
+			
+			//Checks to see what button was pressed
+			String act = request.getParameter("regBtns");
+			
+			if (act == null) {
+			    //no button has been selected
+			} else if (act.equals("deposit")) {
+			    //submit button was pressed
+				String depositWithdrawAmount = request.getParameter("DepositorWithdrawAmount");
+				int dwAmount = Integer.parseInt(depositWithdrawAmount);
+				Integer a = (Integer) session.getAttribute("accountId");
+				int accountId = a;
+				
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+				LocalDateTime now = LocalDateTime.now();  
 	
+				
+				try {
+					dbController.depositAccount(accountId, dwAmount, dtf.format(now), con);
+					String q = "SELECT * from tbl_Account where id = ?";
+					PreparedStatement pst = con.prepareStatement(q);
+					pst.setInt(1, accountId);
+					ResultSet results = pst.executeQuery();
+					while(results.next()) {
+						// Set attributes to be used in JSP file
+			
+						session.setAttribute("accountId", results.getInt(1));
+						session.setAttribute("accountType", results.getString(2));
+						session.setAttribute("accountBalance", results.getInt(3));
+						session.setAttribute("accountStatus", results.getString(4));
+						session.setAttribute("accountMsg", results.getString(5));
+						session.setAttribute("accountLastUpdated", results.getString(6));
+					}
+					
+					response.sendRedirect("tellerAccountScreen.jsp");
+					
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+				}
+				
+				
+				
+			} else if (act.equals("withdraw")) {
+			    //submit button was pressed
+				String depositWithdrawAmount = request.getParameter("DepositorWithdrawAmount");
+				int dwAmount = Integer.parseInt(depositWithdrawAmount);
+				Integer a = (Integer) session.getAttribute("accountId");
+				int accountId = a;
+				
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+				LocalDateTime now = LocalDateTime.now();  
+	
+				
+				try {
+					dbController.withdrawAccount(accountId, dwAmount, dtf.format(now), con);
+					String q = "SELECT * from tbl_Account where id = ?";
+					PreparedStatement pst = con.prepareStatement(q);
+					pst.setInt(1, accountId);
+					ResultSet results = pst.executeQuery();
+					while(results.next()) {
+						// Set attributes to be used in JSP file
+			
+						session.setAttribute("accountId", results.getInt(1));
+						session.setAttribute("accountType", results.getString(2));
+						session.setAttribute("accountBalance", results.getInt(3));
+						session.setAttribute("accountStatus", results.getString(4));
+						session.setAttribute("accountMsg", results.getString(5));
+						session.setAttribute("accountLastUpdated", results.getString(6));
+					}
+					
+					response.sendRedirect("tellerAccountScreen.jsp");
+					
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println(e.getMessage());
+				}
+				
+			}
+		}
 		
 	}
 }
+

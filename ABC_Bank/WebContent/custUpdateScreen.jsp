@@ -17,7 +17,8 @@
 	<div>Name : <input type="text" name="name" value = <%= session.getAttribute("CustomerUpdateName") %>></div>
 	<div>Address : <input type="text" name="address" value = <%= session.getAttribute("CustomerUpdateAddress") %>></div>
 	<div>Age : <input type="number" name="age" value = <%= session.getAttribute("CustomerUpdateAge") %>></div>
-	<button type="submit">Submit</button>
+	<button type="submit"   name = "regBtns" value = "update">Submit</button>
+    <button type = "submit" name = "regBtns" value = "mainmenu">Main Menu</button>  
 </form>
 
 
