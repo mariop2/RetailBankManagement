@@ -69,48 +69,28 @@ public class dbController {
 		else 
 			return false;
 	}
-	
-	public static boolean custExists(int customerId, Connection con) throws SQLException{
-		String q = "SELECT * from tbl_Customer where id = ?";
-		
-		PreparedStatement pst = con.prepareStatement(q);
-		pst.setInt(1,customerId);
-		int cnt = pst.executeUpdate();
-		if(cnt == 1) return true;
-		return false;
-		
-	}
 
 	public static boolean createAccount(int id, String type, int balance, String status, String msg, String lastUpdated, int customerId, Connection con) throws SQLException{
 		
-		if(custExists(customerId, con)) {
-			String q = "INSERT INTO tbl_Account(id , type, balance, status, msg, lastUpdated) VALUES (?, ?, ?, ?, ?, ?)";
-			
-			PreparedStatement pst = con.prepareStatement(q);
-			pst.setInt(1,id);
-			pst.setString(2, type);
-			pst.setInt(3, balance);
-			pst.setString(4, "Active");
-			pst.setString(5, "Account Created");
-			pst.setString(6, lastUpdated);
-			
-			//ResultSet rs = pst.executeQuery();
-			//or
-			int cnt = pst.executeUpdate();
-			if(cnt == 1){
-				//System.out.println(lastUpdated);
-				//Add initial deposit to transaction table
-				createTransactions(id, balance, type, "DEPOSIT", lastUpdated, con);
-				return addToLinkTbl(customerId, id, con);
-			}
-			else {
-				return false;
-			}
+		String q = "INSERT INTO tbl_Account(id , type, balance, status, msg, lastUpdated) VALUES (?, ?, ?, ?, ?, ?)";
+		
+		PreparedStatement pst = con.prepareStatement(q);
+		pst.setInt(1,id);
+		pst.setString(2, type);
+		pst.setInt(3, balance);
+		pst.setString(4, "Active");
+		pst.setString(5, "Account Created");
+		pst.setString(6, lastUpdated);
+		
+		//ResultSet rs = pst.executeQuery();
+		//or
+		int cnt = pst.executeUpdate();
+		if(cnt == 1){
+			return addToLinkTbl(customerId, id, con);
 		}
-		return false;
-		
-		
-		
+		else {
+			return false;
+		}	
 	}
 	
 	static boolean addToLinkTbl(int customerId, int accountId, Connection con) throws SQLException{

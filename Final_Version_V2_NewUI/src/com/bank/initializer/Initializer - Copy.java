@@ -91,7 +91,7 @@ public class Initializer {
 		System.out.println(x);
 		
 		
-		/*x = dbController.createTransactions(1, 10000, "DEBIT", "DEPOSIT", "2020-02-10", con);
+		x = dbController.createTransactions(1, 10000, "DEBIT", "fdasdfs", "2020-02-10", con);
 		System.out.println(x);
 		
 		x = dbController.createTransactions(2,  9000, "DEBIT", "fdasdfs", "2017-02-10", con);
@@ -110,7 +110,7 @@ public class Initializer {
 		System.out.println(x);
 		
 		x = dbController.createTransactions(7,  1200, "DEBIT", "fdasdfs", "2016-02-10", con);		
-		System.out.println(x);*/
+		System.out.println(x);
 
 		/*
 		 * Data Table Creation. Three tables are created, (1)Customers, (2)Accounts, (3)Intermediate Table
@@ -132,21 +132,21 @@ public class Initializer {
 		x = dbController.createCustomer(7, "Frank Johnson", 50, "fads", "fads", "San Diego", "CA", "fads", "fads", "fads", con);
 		System.out.println(x);
 		
-		x = dbController.createAccount(1, "Saving", 10000, "fdasfd", "fdasdfs", "2020-02-10", 1, con);
+		x = dbController.createAccount(1, "Saving", 10000, "fdasfd", "fdasdfs", "02/10/2020", 1, con);
 		System.out.println(x);
-		x = dbController.createAccount(2, "Saving", 9000, "fdasfd", "fdasdfs", "2017-02-10", 1, con);
+		x = dbController.createAccount(2, "Saving", 9000, "fdasfd", "fdasdfs", "11/04/2018", 1, con);
 
-		x = dbController.createAccount(3, "Saving", 8500, "fdasfd", "fdasdfs", "2015-02-10", 2, con);
+		x = dbController.createAccount(3, "Saving", 8500, "fdasfd", "fdasdfs", "03/21/2015", 2, con);
 
-		x = dbController.createAccount(4, "Saving", 4300, "fdasfd", "fdasdfs", "2012-02-10", 4, con);
+		x = dbController.createAccount(4, "Saving", 4300, "fdasfd", "fdasdfs", "01/30/2009", 4, con);
 
-		x = dbController.createAccount(5, "Checking", 5000, "fdasfd", "fdasdfs", "2009-02-10", 7, con);
-		System.out.println(x);
-		
-		x = dbController.createAccount(6, "Saving", 15000, "fdasfd", "fdasdfs", "2002-02-10", 3, con);
+		x = dbController.createAccount(5, "Checking", 5000, "fdasfd", "fdasdfs", "06/17/2011", 7, con);
 		System.out.println(x);
 		
-		x = dbController.createAccount(7, "Checking", 1200, "fdasfd", "fdasdfs", "2016-02-10", 3, con);
+		x = dbController.createAccount(6, "Saving", 15000, "fdasfd", "fdasdfs", "02/18/2003", 3, con);
+		System.out.println(x);
+		
+		x = dbController.createAccount(7, "Checking", 1200, "fdasfd", "fdasdfs", "11/08/2014", 3, con);
 		System.out.println(x);
 		
 		

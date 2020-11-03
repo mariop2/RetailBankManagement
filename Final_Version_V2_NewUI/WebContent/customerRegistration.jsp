@@ -42,7 +42,8 @@ function goBack() {
   <div class="container">
     <h1>Registration Page</h1>
     <label for="ssn"><b>Customer SSN</b></label>
-    <input type="text" placeholder="Enter ssn" name="customerId" id="cid" placeholder="123-45-6789"  required pattern="\d{9}" required>
+    <input type="text" placeholder="Enter ssn" name="customerId" id="cid" placeholder="123-45-6789" pattern="\d{9}" 
+    title="9 digit numeric" required>
 <br>
     <label for="name"><b>Customer Name</b></label>
     <input type="text" placeholder="name" name="customerName" id="cname" pattern="[a-zA-Z][a-zA-Z ]{2,}" required>

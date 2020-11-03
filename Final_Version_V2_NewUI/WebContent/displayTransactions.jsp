@@ -87,7 +87,7 @@
 			<thead>
 				<tr>
 					<th>ACCOUNT ID</th>
-					<th>BALANCE</th>
+					<th>AMOUNT</th>
 					<th>TYPE</th>
 					<th>DESC</th>
 					<th>TRANSACTION Date</th>
